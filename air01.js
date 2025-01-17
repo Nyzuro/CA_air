@@ -2,7 +2,7 @@ const args = process.argv.slice(2)
 
 function split(strToCut, strSeparator) {
     let string = ""
-    const array = []
+    const strSplit = []
     for (index = 0; strToCut[index]; index++) {
         if (strToCut[index] !== strSeparator[0]) {
             string += strToCut[index]
@@ -12,7 +12,7 @@ function split(strToCut, strSeparator) {
             for (; strToCut[j] === strSeparator[i]; i++) {
                 j++
             } if (i === strSeparator.length) {
-                array.push(string)
+                strSplit.push(string)
                 string = ""
                 index = j - 1
             } else {
@@ -20,8 +20,8 @@ function split(strToCut, strSeparator) {
             }
         }
     }
-    array.push(string)
-    return array
+    strSplit.push(string)
+    return strSplit
 }
 
 if (args.length != 2) {
