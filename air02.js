@@ -1,23 +1,38 @@
-const args = process.argv.slice(2)
-
-function concat(arrayOfString, separator) {
+function concat(arrayOfStrings, separator) {
     let finalString = ""
-    for (i = 0; arrayOfString[i]; i++) {
-        finalString += arrayOfString[i]
-        if (arrayOfString[i + 1]) {
+    for (i = 0; arrayOfStrings[i]; i++) {
+        finalString += arrayOfStrings[i]
+        if (arrayOfStrings[i + 1]) {
             finalString += separator
         }
     }
     return finalString
 }
 
-if (args.length < 3) {
-    console.error("Veuillez entrer au mois 2 chaines de caracteres et 1 separateur")
-    process.exit()
+function isValidArguments(arguments) {
+    if (arguments.length < 3) {
+        console.error("Veuillez entrer au moins 2 chaines de caracteres et 1 separateur")
+        process.exit()
+    }
+    for (const argument of arguments) {
+        if (typeof argument !== 'string') {
+            console.error("Entrez une chaine de caractere")
+            process.exit()
+        }
+    }
+    return arguments
 }
 
-const separator = args.pop()
-const strings = args
-const result = concat(strings, separator)
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
 
-console.log(result)
+function getStringConcat() {
+    const strings = isValidArguments(getArguments())
+    const separator = strings.pop()
+    const arrayOfStrings = strings
+    return concat(arrayOfStrings, separator)
+}
+
+console.log(getStringConcat())
