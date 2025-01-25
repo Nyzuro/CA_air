@@ -1,12 +1,10 @@
-const args = process.argv.slice(2)
-
-function split(strToCut, strSeparators) {
+function split(stringToCut, stringSeparators) {
     const strSplit = []
     let string = ""
-    for (i = 0; strToCut[i]; i++) {
+    for (let i = 0; stringToCut[i]; i++) {
         let isSeparator = false
-        for (separator of strSeparators) {
-            if (strToCut[i] === separator) {
+        for (const separator of stringSeparators) {
+            if (stringToCut[i] === separator) {
                 isSeparator = true
                 if (string) {
                     strSplit.push(string)
@@ -15,20 +13,33 @@ function split(strToCut, strSeparators) {
             }
         }
         if (isSeparator === false) {
-            string += strToCut[i]
+            string += stringToCut[i]
         }
     }
     strSplit.push(string)
     return strSplit
 }
 
-if (args.length !== 1) {
-    console.error("error")
-    process.exit()
+function isValidArguments(arguments) {
+    if (arguments.length !== 1) {
+        console.error("Il faut 1 argument")
+        process.exit()
+    } if (!isNaN(arguments)) {
+        console.error("Il faut 1 argument")
+        process.exit()
+    }
+    return arguments
 }
 
-const str = args[0]
-const separators = [" ", "\n", "\t"]
-const result = split(str, separators)
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
 
-console.log(result)
+function getStringSplit() {
+    const strings = isValidArguments(getArguments())
+    const separators = [" ", "\n", "\t"]
+    return split(strings[0], separators)
+}
+
+console.log(getStringSplit())
