@@ -28,6 +28,11 @@ function isValidArguments(arguments) {
     if (arguments.length !== 2) {
         console.error("Entrez une chaine de caractere et un separateur seulement")
         process.exit()
+    } for (const argument of arguments) {
+        if (!isNaN(argument)) {
+            console.error("Entrez une chaine de caractere")
+            process.exit()
+        }
     }
     return arguments
 }

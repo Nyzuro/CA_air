@@ -24,9 +24,12 @@ function isValidArguments(arguments) {
     if (arguments.length !== 1) {
         console.error("Il faut 1 argument")
         process.exit()
-    } if (!isNaN(arguments)) {
-        console.error("Il faut 1 argument")
-        process.exit()
+    }
+    for (const argument of arguments) {
+        if (!isNaN(argument)) {
+            console.error("Entrez une chaine de caractere")
+            process.exit()
+        }
     }
     return arguments
 }
