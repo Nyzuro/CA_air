@@ -1,22 +1,22 @@
-const args = process.argv.slice(2)
-
-function split(strToCut, strSeparator) {
+function split(stringToCut, stringSeparator) {
     let string = ""
     const strSplit = []
-    for (index = 0; strToCut[index]; index++) {
-        if (strToCut[index] !== strSeparator[0]) {
-            string += strToCut[index]
+    for (let index = 0; stringToCut[index]; index++) {
+        if (stringToCut[index] !== stringSeparator[0]) {
+            string += stringToCut[index]
         } else {
             let i = 0
             let j = index
-            for (; strToCut[j] === strSeparator[i]; i++) {
+            while (stringToCut[j] === stringSeparator[i]) {
+                i++
                 j++
-            } if (i === strSeparator.length) {
+            }
+            if (i === stringSeparator.length && string) {
                 strSplit.push(string)
                 string = ""
                 index = j - 1
             } else {
-                string += strToCut[index]
+                string += stringToCut[index]
             }
         }
     }
@@ -24,13 +24,22 @@ function split(strToCut, strSeparator) {
     return strSplit
 }
 
-if (args.length != 2) {
-    console.error("Entrez une chaine de caractere et un separateur seulement")
-    process.exit()
+function isValidArguments(arguments) {
+    if (arguments.length !== 2) {
+        console.error("Entrez une chaine de caractere et un separateur seulement")
+        process.exit()
+    }
+    return arguments
 }
 
-const string = args[0]
-const separator = args[1]
-const result = split(string, separator)
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
 
-console.log(result)
+function getStringSplit() {
+    const strings = isValidArguments(getArguments())
+    return split(strings[0], strings[1])
+}
+
+console.log(getStringSplit())
