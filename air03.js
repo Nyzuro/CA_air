@@ -1,25 +1,41 @@
 const args = process.argv.slice(2)
 
-function intruder(list) {
+function findIntruder(list) {
     for (i = 0; list[i]; i++) {
-        let count = 0
+        let countPair = 0
         for (j = 0; list[j]; j++) {
             if (list[i] === list[j]) {
-                count++
+                countPair++
             }
         }
-        if (count === 1) {
+        if (countPair === 1) {
             return list[i]
         }
     }
-    return "Chaque valeur a une paire"
+    return
 }
 
-if (args.length < 1) {
-    console.error("error")
-    process.exit()
+function isValidArguments(arguments) {
+    if (arguments.length < 1) {
+        console.error("Entrez un argument")
+        process.exit()
+    }
+    return arguments
 }
 
-const result = intruder(args)
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
 
-console.log(result)
+function getIntruder() {
+    const list = isValidArguments(getArguments())
+    const intruder = findIntruder(list)
+    if (!intruder) {
+        console.error("Aucun intrus n'a ete trouve")
+        process.exit()
+    }
+    return intruder
+}
+
+console.log(getIntruder())
