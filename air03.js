@@ -1,9 +1,9 @@
 const args = process.argv.slice(2)
 
 function findIntruder(list) {
-    for (i = 0; list[i]; i++) {
+    for (let i = 0; list[i]; i++) {
         let countPair = 0
-        for (j = 0; list[j]; j++) {
+        for (let j = 0; list[j]; j++) {
             if (list[i] === list[j]) {
                 countPair++
             }
