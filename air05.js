@@ -1,29 +1,39 @@
-const args = process.argv.slice(2)
-
 function operationForList(list, operation) {
     let afterOperation = []
-    for (number of list) {
+    for (const number of list) {
         afterOperation.push(number + operation)
     }
     return afterOperation
 }
 
-if (args.length < 2) {
-    console.error("error")
-    process.exit()
-}
-for (i in args) {
-    args[i] = Number(args[i])
-    if (isNaN(args[i])) {
-        console.error("error")
+function isValidArguments(arguments) {
+    if (arguments.length < 2) {
+        console.error("Entrez au moins 2 arguments")
         process.exit()
     }
+    return arguments
 }
 
-const operation = args.pop()
-const list = args
-const result = operationForList(list, operation)
-
-for (index of result) {
-    console.log(index)
+function isValidNumbers(arguments) {
+    for (let i = 0; arguments[i]; i++) {
+        if (isNaN(arguments[i])) {
+            console.error("Entrez des chiffres")
+            process.exit()
+        }
+        arguments[i] = Number(arguments[i])
+    }
+    return arguments
 }
+
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
+
+function getListAfterOperation() {
+    const numbers = isValidNumbers(isValidArguments(getArguments()))
+    const operation = numbers.pop()
+    return operationForList(numbers, operation)
+}
+
+console.log(getListAfterOperation())
