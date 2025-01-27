@@ -1,29 +1,46 @@
-const args = process.argv.slice(2)
-
 function sortedInsert(firstArray, newElement) {
     const sortedArray = []
-    for (i = 0; firstArray[i]; i++) {
+    for (let i = 0; i < firstArray.length; i++) {
         if (firstArray[i] <= newElement) {
             sortedArray.push(firstArray[i])
-        }
-        else {
+        } else {
             sortedArray.push(newElement)
-            for (j = i; firstArray[j]; j++) {
+            for (let j = i; j < firstArray.length; j++) {
                 sortedArray.push(firstArray[j])
             }
             return sortedArray
         }
     }
 }
-if (args.length < 2) {
-    console.error("error")
-    process.exit()
-}
-const newElement = args.pop()
-const firstArray = args
-for (number of firstArray) {
+
+function isValidArguments(arguments) {
+    if (arguments.length < 2) {
+        console.error("Le nombre d'arguments est trop faible")
+        process.exit()
+    }
+    return arguments
 }
 
-const result = sortedInsert(firstArray, newElement)
+function isValidNumbers(arguments) {
+    for (let i = 0; i < arguments.length; i++) {
+        if (isNaN(arguments[i])) {
+            console.error("Entrez des chiffres")
+            process.exit()
+        }
+        arguments[i] = Number(arguments[i])
+    }
+    return arguments
+}
 
-console.log(result)
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
+
+function getSortedArray() {
+    const numbers = isValidNumbers(isValidArguments(getArguments()))
+    const newElement = numbers.pop()
+    return sortedInsert(numbers, newElement)
+}
+
+console.log(getSortedArray())

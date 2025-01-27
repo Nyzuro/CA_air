@@ -1,30 +1,40 @@
-const args = process.argv.slice(2)
-
-function searchInString(arrayOfStrings, strToFind) {
+function findSearchedInString(arrayOfStrings, stringToFind) {
     const finalArray = []
-    for (string of arrayOfStrings) {
-        let strCompare = ""
-        for (i = 0; string[i]; i++) {
-            if (string[i] === strToFind[0]) {
-                for (j = i; strCompare.length < strToFind.length; j++) {
-                    strCompare += string[j]
+    for (const string of arrayOfStrings) {
+        let stringCompare = ""
+        for (let i = 0; string[i]; i++) {
+            if (string[i] === stringToFind[0]) {
+                for (let j = i; stringCompare.length < stringToFind.length; j++) {
+                    stringCompare += string[j]
                 }
             }
         }
-        if (!strCompare || strCompare !== strToFind) {
+        if (!stringCompare) {
+            finalArray.push(string)
+        } else if (stringCompare !== stringToFind) {
             finalArray.push(string)
         }
     }
     return finalArray
 }
 
-if (args.length < 2) {
-    console.error("error")
-    process.exit()
+function isValidArguments(arguments) {
+    if (arguments.length < 2) {
+        console.error("Le nombre d'arguments est trop faible")
+        process.exit()
+    }
+    return arguments
 }
 
-const stringToFind = args.pop()
-const arrayOfStrings = args
-const result = searchInString(arrayOfStrings, stringToFind)
+function getArguments() {
+    const arguments = process.argv.slice(2)
+    return arguments
+}
 
-console.log(result)
+function getSearchedString() {
+    const arrayOfStrings = isValidArguments(getArguments())
+    const stringToFind = arrayOfStrings.pop()
+    return findSearchedInString(arrayOfStrings, stringToFind)
+}
+
+console.log(getSearchedString())
