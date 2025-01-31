@@ -1,41 +1,41 @@
-const args = process.argv.slice(2)
-
-function findIntruder(list) {
-    for (let i = 0; list[i]; i++) {
-        let countPair = 0
-        for (let j = 0; list[j]; j++) {
-            if (list[i] === list[j]) {
-                countPair++
-            }
-        }
-        if (countPair === 1) {
-            return list[i]
-        }
+function findIntruders(list) {
+  const intruders = [];
+  for (let i = 0; i < list.length; i++) {
+    let countPair = 0;
+    for (let j = 0; j < list.length; j++) {
+      if (list[i] === list[j]) {
+        countPair++;
+      }
     }
-    return
+    if (countPair === 1) {
+      intruders.push(list[i]);
+    }
+  }
+  return intruders.join(" ");
 }
 
 function isValidArguments(arguments) {
-    if (arguments.length < 1) {
-        console.error("Entrez un argument")
-        process.exit()
-    }
-    return arguments
+  if (arguments.length < 1) {
+    console.error("Entrez un argument");
+    return;
+  }
+  return arguments;
 }
 
 function getArguments() {
-    const arguments = process.argv.slice(2)
-    return arguments
+  const arguments = process.argv.slice(2);
+  return arguments;
 }
 
 function getIntruder() {
-    const list = isValidArguments(getArguments())
-    const intruder = findIntruder(list)
-    if (!intruder) {
-        console.error("Aucun intrus n'a ete trouve")
-        process.exit()
-    }
-    return intruder
+  const arguments = isValidArguments(getArguments());
+  if (!arguments) return;
+  const intruders = findIntruders(arguments);
+  if (!intruders) {
+    console.error("Aucun intrus n'a ete trouve");
+    return;
+  }
+  return intruders;
 }
 
-console.log(getIntruder())
+console.log(getIntruder());
