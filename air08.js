@@ -1,69 +1,87 @@
-function sortedFusion(firstArray, secondArray) {
-    const finalArray = [...firstArray, ...secondArray]
-    for (let i = finalArray.length - 1; i > 0; i--) {
-        for (let j = 0; j < i; j++) {
-            if (finalArray[j] > finalArray[j + 1]) {
-                const temp = finalArray[j]
-                finalArray[j] = finalArray[j + 1]
-                finalArray[j + 1] = temp
-            }
-        }
+function getBothArrays(arguments) {
+  const firstArray = [];
+  const secondArray = [];
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i] !== "fusion") firstArray.push(arguments[i]);
+    else {
+      for (let j = i + 1; j < arguments.length; j++) {
+        secondArray.push(arguments[j]);
+      }
+      return [firstArray, secondArray];
     }
-    return finalArray.join(" ")
+  }
+}
+
+function sortedFusion(firstArray, secondArray) {
+  const finalArray = [];
+  let i = 0;
+  let j = 0;
+  while (i < firstArray.length && j < secondArray.length) {
+    if (firstArray[i] < secondArray[j]) {
+      finalArray.push(firstArray[i]);
+      i++;
+    } else if (secondArray[j] < firstArray[i]) {
+      finalArray.push(secondArray[j]);
+      j++;
+    } else if (firstArray[i] === secondArray[j]) {
+      finalArray.push(firstArray[i]);
+      i++;
+    }
+    if (i === firstArray.length) {
+      finalArray.push(secondArray[j]);
+      j++;
+    } else if (j === secondArray.length) {
+      finalArray.push(firstArray[i]);
+      i++;
+    }
+  }
+  return finalArray;
 }
 
 function isValidArguments(arguments) {
-    if (arguments.length < 3) {
-        console.error("Les arguments doivent etre comme ceci: 10 fusion 15")
-        process.exit()
-    }
-    const argumentsJoined = arguments.join(" ")
-    const regex = new RegExp(/\d+\s*fusion\s*\d+/)
-    if (regex.test(argumentsJoined)) {
-        return arguments
-    }
-    console.error("Les arguments doivent etre comme ceci: 10 fusion 15")
-    process.exit()
+  if (arguments.length < 3) {
+    console.error("Les arguments doivent etre comme ceci: 10 fusion 15");
+    return;
+  }
+  return arguments;
+}
+
+function containsFusion(arguments) {
+  const hasFusion = arguments.includes("fusion");
+  if (!hasFusion) {
+    console.error("Les arguments doivent etre comme ceci: 10 fusion 15");
+    return;
+  }
+  return arguments;
 }
 
 function isValidNumbers(arguments) {
-    for (let i = 0; i < arguments.length; i++) {
-        if (arguments[i] !== "fusion") {
-            if (isNaN(arguments[i])) {
-                console.error("Entrez des chiffres")
-                process.exit()
-            }
-            arguments[i] = Number(arguments[i])
-        }
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i] !== "fusion") {
+      if (isNaN(arguments[i])) {
+        console.error("Entrez des chiffres");
+        return;
+      }
+      arguments[i] = Number(arguments[i]);
     }
-    return arguments
+  }
+  return arguments;
 }
-
 
 function getArguments() {
-    const arguments = process.argv.slice(2)
-    return arguments
-}
-
-function getBothArrays(arguments) {
-    const firstArray = []
-    const secondArray = []
-    for (let i = 0; i < arguments.length; i++) {
-        if (arguments[i] !== "fusion")
-            firstArray.push(arguments[i])
-        else {
-            for (let j = i + 1; j < arguments.length; j++) {
-                secondArray.push(arguments[j])
-            }
-            return [firstArray, secondArray]
-        }
-    }
+  const arguments = process.argv.slice(2);
+  return arguments;
 }
 
 function getSortedFusion() {
-    const arguments = isValidNumbers(isValidArguments(getArguments()))
-    const arrays = getBothArrays(arguments)
-    return sortedFusion(arrays[0], arrays[1])
+  const arguments = isValidArguments(getArguments());
+  if (!arguments) return;
+  const arrayFusion = containsFusion(arguments);
+  if (!arrayFusion) return;
+  const numbers = isValidNumbers(arguments);
+  if (!numbers) return;
+  const arrays = getBothArrays(arguments);
+  return sortedFusion(arrays[0], arrays[1]);
 }
 
-console.log(getSortedFusion())
+console.log(getSortedFusion());
