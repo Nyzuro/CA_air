@@ -1,20 +1,22 @@
-function findSearchedInString(arrayOfStrings, stringToFind) {
-  const finalArray = [];
-  for (const string of arrayOfStrings) {
-    let stringCompare = "";
-    for (let i = 0; string[i]; i++) {
-      if (string[i] === stringToFind[0]) {
-        for (let j = i; stringCompare.length < stringToFind.length; j++) {
-          stringCompare += string[j];
-        }
-      }
+function stringCompare(string, stringToFind) {
+  for (let i = 0; i <= string.length; i++) {
+    let j = 0;
+    while (string[i] === stringToFind[j]) {
+      i++;
+      j++;
+      if (j === stringToFind.length) return true;
     }
-    if (!stringCompare) {
-      finalArray.push(string);
-    } else if (stringCompare !== stringToFind) {
-      finalArray.push(string);
+    if (j !== 0) {
+      i--;
     }
   }
+  return false;
+}
+
+function findInString(arrayOfStrings, stringToFind) {
+  let finalArray = arrayOfStrings.filter(
+    (string) => !stringCompare(string, stringToFind)
+  );
   return finalArray;
 }
 
@@ -22,6 +24,12 @@ function isValidArguments(arguments) {
   if (arguments.length < 2) {
     console.error("Le nombre d'arguments est trop faible");
     return;
+  }
+  for (const argument of arguments) {
+    if (typeof argument !== "string") {
+      console.error("Entrez une chaine de caractere");
+      return;
+    }
   }
   return arguments;
 }
@@ -35,7 +43,7 @@ function getSearchedString() {
   const arrayOfStrings = isValidArguments(getArguments());
   if (!arrayOfStrings) return;
   const stringToFind = arrayOfStrings.pop();
-  return findSearchedInString(arrayOfStrings, stringToFind);
+  return findInString(arrayOfStrings, stringToFind);
 }
 
 console.log(getSearchedString());
