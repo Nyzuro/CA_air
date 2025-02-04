@@ -8,7 +8,7 @@ const arrayRotate = (array) => {
 const isValidArguments = (arguments) => {
   if (arguments.length < 1) {
     console.error("Le nombre d'arguments est trop faible");
-    process.exit();
+    return;
   }
   return arguments;
 };
@@ -20,6 +20,7 @@ const getArguments = () => {
 
 function getRotatedArray() {
   const array = isValidArguments(getArguments());
+  if (!array) return;
   return arrayRotate(array);
 }
 
