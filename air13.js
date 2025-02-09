@@ -42,32 +42,58 @@ const isValidFiles = (filesRequired, filesWanted) => {
   return filesWanted;
 };
 
-const results = [
-  {
-    exercise: "air00.js",
-    entries: ['"Bonjourtout le monde"', '"Bonjour\ntout\tle monde"'],
-    results: [
-      "[ 'Bonjourtout', 'le', 'monde' ]",
-      "[ 'Bonjour', 'tout', 'le', 'monde' ]",
-    ],
-  },
-];
+const unitsTests = () => {
+  const tests = [
+    {
+      exercise: "air00.js",
+      entries: ['"Bonjourtout le monde"', '"Bonjour\ntout\tle monde"'],
+      results: [
+        "[ 'Bonjourtout', 'le', 'monde' ]",
+        "[ 'Bonjour', 'tout', 'le', 'monde' ]",
+      ],
+    },
+  ];
+  return tests;
+};
 
-results.forEach((exercise) => {
-  exercise.entries.forEach((entry, index) => {
-    const result = exercise.results[index];
-    const exerciseName = exercise.exercise;
+const executeTest = (tests) => {
+  let totalSuccess = 0;
+  tests.forEach((exercise) => {
+    exercise.entries.forEach((entry, index) => {
+      const result = exercise.results[index];
+      const exerciseName = exercise.exercise;
 
-    exec(`node ${exerciseName} ${entry}`, function (error, stdout, stderr) {
-      const stdoutCleared = stdout.split("\n")[0];
-      if (error !== null) {
-        console.error("exec error: " + error);
-      }
-      if (stdoutCleared === result) {
-        console.log(
-          `${exerciseName} (${index + 1}/${exercise.results.length}) : success`
-        );
-      }
+      exec(`node ${exerciseName} ${entry}`, function (error, stdout, stderr) {
+        const stdoutCleared = stdout.split("\n")[0];
+        if (error !== null) {
+          console.error("exec error: " + error);
+        }
+        if (stdoutCleared === result) {
+          console.log(
+            `${exerciseName} (${index + 1}/${
+              exercise.results.length
+            }) : success`
+          );
+          totalSuccess++;
+        } else {
+          console.log(
+            `${exerciseName} (${index + 1}/${
+              exercise.results.length
+            }) : failure`
+          );
+        }
+      });
     });
   });
-});
+  return totalSuccess;
+};
+
+const getTestsResults = () => {
+  const filesRequired = getFilesRequired();
+  const filesWanted = getFilesWanted();
+  const files = isValidFiles(filesRequired, filesWanted);
+  if (!files) return;
+  return executeTest(unitsTests());
+};
+
+console.log(getTestsResults());
