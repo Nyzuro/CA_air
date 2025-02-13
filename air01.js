@@ -34,7 +34,7 @@ function isValidArguments(arguments) {
     return;
   }
   for (const argument of arguments) {
-    if (typeof argument !== String) {
+    if (typeof argument !== "string") {
       console.error("Entrez une chaine de caractere");
       return;
     }
