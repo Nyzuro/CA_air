@@ -8,7 +8,7 @@ function sortedInsert(firstArray, newElement) {
       for (let j = i; j < firstArray.length; j++) {
         sortedArray.push(firstArray[j]);
       }
-      return sortedArray;
+      return sortedArray.join(" ");
     }
   }
 }
