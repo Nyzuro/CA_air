@@ -16,7 +16,7 @@ function sortedFusion(firstArray, secondArray) {
   const finalArray = [];
   let i = 0;
   let j = 0;
-  while (i < firstArray.length && j < secondArray.length) {
+  while (i < firstArray.length || j < secondArray.length) {
     if (firstArray[i] < secondArray[j]) {
       finalArray.push(firstArray[i]);
       i++;
@@ -35,7 +35,7 @@ function sortedFusion(firstArray, secondArray) {
       i++;
     }
   }
-  return finalArray;
+  return finalArray.join(" ");
 }
 
 function isValidArguments(arguments) {
