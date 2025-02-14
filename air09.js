@@ -24,4 +24,4 @@ function getRotatedArray() {
   return arrayRotate(array);
 }
 
-console.log(getRotatedArray);
+console.log(getRotatedArray());
