@@ -2,7 +2,7 @@ const arrayRotate = (array) => {
   const rotatedArray = [];
   const firstElement = array.shift();
   rotatedArray.push(...array, firstElement);
-  return rotatedArray;
+  return rotatedArray.join(" ");
 };
 
 const isValidArguments = (arguments) => {
