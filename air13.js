@@ -1,6 +1,7 @@
-const { exec } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+const { readdirSync } = require("fs");
+const { extname } = require("path");
+const { execSync } = require("child_process");
+const tests = require("./tests.json");
 
 const getFilesRequired = () => {
   const filesRequired = [
@@ -22,8 +23,8 @@ const getFilesRequired = () => {
 };
 
 const getFilesWanted = () => {
-  const filenames = fs.readdirSync(__dirname);
-  const filesWanted = filenames.filter((file) => path.extname(file) === ".js");
+  const filenames = readdirSync(__dirname);
+  const filesWanted = filenames.filter((file) => extname(file) === ".js");
   filesWanted.pop();
   return filesWanted;
 };
@@ -42,50 +43,58 @@ const isValidFiles = (filesRequired, filesWanted) => {
   return filesWanted;
 };
 
-const unitsTests = () => {
-  const tests = [
-    {
-      exercise: "air00.js",
-      entries: ['"Bonjourtout le monde"', '"Bonjour\ntout\tle monde"'],
-      results: [
-        "[ 'Bonjourtout', 'le', 'monde' ]",
-        "[ 'Bonjour', 'tout', 'le', 'monde' ]",
-      ],
-    },
-  ];
-  return tests;
+const checkTest = (
+  stdoutCleared,
+  result,
+  exerciseName,
+  index,
+  exercise,
+  totalSuccess
+) => {
+  if (stdoutCleared === result) {
+    console.log(
+      `${exerciseName} (${index + 1}/${exercise.results.length}) : success`
+    );
+    totalSuccess++;
+  } else {
+    console.log(
+      `${exerciseName} (${index + 1}/${exercise.results.length}) : failure`
+    );
+  }
+  return totalSuccess;
 };
 
 const executeTest = (tests) => {
   let totalSuccess = 0;
-  tests.forEach((exercise) => {
-    exercise.entries.forEach((entry, index) => {
+  let numberOfTests = 0;
+  for (const exercise of tests) {
+    for (let index = 0; index < exercise.entries.length; index++) {
+      const entry = exercise.entries[index];
       const result = exercise.results[index];
       const exerciseName = exercise.exercise;
 
-      exec(`node ${exerciseName} ${entry}`, function (error, stdout, stderr) {
-        const stdoutCleared = stdout.split("\n")[0];
-        if (error !== null) {
-          console.error("exec error: " + error);
+      try {
+        const stdout = execSync(`node ${exerciseName} ${entry}`).toString();
+        let stdoutCleared;
+        stdoutCleared = stdout.split("\n")[0];
+        if (exerciseName === "air11.js") {
+          stdoutCleared = stdout.split("").join("");
         }
-        if (stdoutCleared === result) {
-          console.log(
-            `${exerciseName} (${index + 1}/${
-              exercise.results.length
-            }) : success`
-          );
-          totalSuccess++;
-        } else {
-          console.log(
-            `${exerciseName} (${index + 1}/${
-              exercise.results.length
-            }) : failure`
-          );
-        }
-      });
-    });
-  });
-  return totalSuccess;
+        totalSuccess = checkTest(
+          stdoutCleared,
+          result,
+          exerciseName,
+          index,
+          exercise,
+          totalSuccess
+        );
+      } catch (error) {
+        console.error(`exec error: ${error}`);
+      }
+      numberOfTests++;
+    }
+  }
+  console.log(`Total success : (${totalSuccess}/${numberOfTests})`);
 };
 
 const getTestsResults = () => {
@@ -93,7 +102,7 @@ const getTestsResults = () => {
   const filesWanted = getFilesWanted();
   const files = isValidFiles(filesRequired, filesWanted);
   if (!files) return;
-  return executeTest(unitsTests());
+  return executeTest(tests);
 };
 
-console.log(getTestsResults());
+getTestsResults();
