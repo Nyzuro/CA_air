@@ -43,22 +43,15 @@ const isValidFiles = (filesRequired, filesWanted) => {
   return filesWanted;
 };
 
-const checkTest = (
-  stdoutCleared,
-  result,
-  exerciseName,
-  index,
-  exercise,
-  totalSuccess
-) => {
-  if (stdoutCleared === result) {
+const checkTest = (stdoutCleared, index, exercise, totalSuccess) => {
+  if (stdoutCleared === exercise.results[index]) {
     console.log(
-      `${exerciseName} (${index + 1}/${exercise.results.length}) : success`
+      `${exercise.exercise} (${index + 1}/${exercise.results.length}) : success`
     );
     totalSuccess++;
   } else {
     console.log(
-      `${exerciseName} (${index + 1}/${exercise.results.length}) : failure`
+      `${exercise.exercise} (${index + 1}/${exercise.results.length}) : failure`
     );
   }
   return totalSuccess;
@@ -70,7 +63,6 @@ const executeTest = (tests) => {
   for (const exercise of tests) {
     for (let index = 0; index < exercise.entries.length; index++) {
       const entry = exercise.entries[index];
-      const result = exercise.results[index];
       const exerciseName = exercise.exercise;
 
       try {
@@ -80,14 +72,7 @@ const executeTest = (tests) => {
         if (exerciseName === "air11.js") {
           stdoutCleared = stdout.split("").join("");
         }
-        totalSuccess = checkTest(
-          stdoutCleared,
-          result,
-          exerciseName,
-          index,
-          exercise,
-          totalSuccess
-        );
+        totalSuccess = checkTest(stdoutCleared, index, exercise, totalSuccess);
       } catch (error) {
         console.error(`exec error: ${error}`);
       }
