@@ -14,10 +14,13 @@ function stringCompare(string, stringToFind) {
 }
 
 function findInString(arrayOfStrings, stringToFind) {
-  let finalArray = arrayOfStrings.filter(
-    (string) => !stringCompare(string, stringToFind)
-  );
-  return finalArray;
+  const finalArray = [];
+  for (let i = 0; i < arrayOfStrings.length; i++) {
+    if (!stringCompare(arrayOfStrings[i], stringToFind)) {
+      finalArray.push(arrayOfStrings[i]);
+    }
+  }
+  return finalArray.join(", ");
 }
 
 function isValidArguments(arguments) {
