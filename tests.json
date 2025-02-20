@@ -50,7 +50,7 @@
       "\"Hello\" \"all\" \"over\" \"the\" \"world\" \"l\"",
       "\"Hello\" \"all\" \"over\" \"the\" \"world\" \"ll\""
     ],
-    "results": ["[ 'over', 'the' ]", "[ 'over', 'the', 'world' ]"]
+    "results": ["over, the", "over, the, world"]
   },
   {
     "exercise": "air07.js",
