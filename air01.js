@@ -1,28 +1,23 @@
-function stringCompare(string, stringToFind, index) {
-  let i = index;
-  let j = 0;
-  while (string[i] === stringToFind[j]) {
-    i++;
-    j++;
-    if (j === stringToFind.length) {
-      return true;
-    }
-  }
-  return false;
-}
-
 function split(stringToCut, stringSeparator) {
   let string = "";
   const stringSplited = [];
-  for (let index = 0; index < stringToCut.length; index++) {
-    if (stringToCut[index] === stringSeparator[0]) {
-      const isSeparator = stringCompare(stringToCut, stringSeparator, index);
-      if (isSeparator) {
-        stringSplited.push(string);
-        string = "";
-        index += stringSeparator.length - 1;
-      } else string += stringToCut[index];
-    } else string += stringToCut[index];
+
+  for (let i = 0; i < stringToCut.length; i++) {
+    let isSeparator = false;
+    if (stringToCut[i] === stringSeparator[0]) {
+      let compare = i;
+      for (let j = 0; stringToCut[compare] === stringSeparator[j]; j++) {
+        if (j === stringSeparator.length - 1) {
+          stringSplited.push(string);
+          string = "";
+          i += stringSeparator.length - 1;
+          isSeparator = true;
+          break;
+        }
+        compare++;
+      }
+    }
+    if (!isSeparator) string += stringToCut[i];
   }
   stringSplited.push(string);
   return stringSplited;
@@ -33,13 +28,17 @@ function isValidArguments(arguments) {
     console.error("Entrez une chaine de caractere et un separateur seulement");
     return;
   }
-  for (const argument of arguments) {
-    if (typeof argument !== "string") {
+  return arguments;
+}
+
+function isValidStrings(strings) {
+  for (const string of strings) {
+    if (!isNaN(string)) {
       console.error("Entrez une chaine de caractere");
       return;
     }
   }
-  return arguments;
+  return strings;
 }
 
 function getArguments() {
@@ -48,7 +47,9 @@ function getArguments() {
 }
 
 function getStringSplit() {
-  const strings = isValidArguments(getArguments());
+  const arguments = isValidArguments(getArguments());
+  if (!arguments) return;
+  const strings = isValidStrings(arguments);
   if (!strings) return;
   return split(strings[0], strings[1]);
 }
