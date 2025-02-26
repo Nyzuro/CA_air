@@ -1,26 +1,18 @@
-function stringCompare(string, stringToFind) {
-  for (let i = 0; i <= string.length; i++) {
-    let j = 0;
-    while (string[i] === stringToFind[j]) {
-      i++;
-      j++;
-      if (j === stringToFind.length) return true;
-    }
-    if (j !== 0) {
-      i--;
-    }
-  }
-  return false;
-}
+function findInString(strings, stringToFind) {
+  for (const string of strings) {
+    for (let i = 0; i < string.length; i++) {
+      let countSameChar = 0;
 
-function findInString(arrayOfStrings, stringToFind) {
-  const finalArray = [];
-  for (let i = 0; i < arrayOfStrings.length; i++) {
-    if (!stringCompare(arrayOfStrings[i], stringToFind)) {
-      finalArray.push(arrayOfStrings[i]);
+      for (let j = 0; j < stringToFind.length; j++)
+        if (string[i + j] === stringToFind[j]) countSameChar++;
+
+      if (countSameChar === stringToFind.length - 1) {
+        strings.splice(string, 1);
+        break;
+      }
     }
   }
-  return finalArray.join(", ");
+  return strings.join(", ");
 }
 
 function isValidArguments(arguments) {
@@ -28,13 +20,17 @@ function isValidArguments(arguments) {
     console.error("Le nombre d'arguments est trop faible");
     return;
   }
-  for (const argument of arguments) {
-    if (typeof argument !== "string") {
+  return arguments;
+}
+
+function isValidStrings(strings) {
+  for (const string of strings) {
+    if (!isNaN(string)) {
       console.error("Entrez une chaine de caractere");
       return;
     }
   }
-  return arguments;
+  return strings;
 }
 
 function getArguments() {
@@ -43,10 +39,14 @@ function getArguments() {
 }
 
 function getSearchedString() {
-  const arrayOfStrings = isValidArguments(getArguments());
-  if (!arrayOfStrings) return;
-  const stringToFind = arrayOfStrings.pop();
-  return findInString(arrayOfStrings, stringToFind);
+  const arguments = isValidArguments(getArguments());
+  if (!arguments) return;
+  const strings = isValidStrings(arguments);
+  if (!strings) return;
+
+  const stringToFind = strings.pop();
+
+  return findInString(strings, stringToFind);
 }
 
 console.log(getSearchedString());
