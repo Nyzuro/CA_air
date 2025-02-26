@@ -1,23 +1,16 @@
-function split(stringToCut, stringSeparators) {
-  const strSplit = [];
+function split(stringToSplit, separators) {
+  const stringSplited = [];
   let string = "";
-  for (let i = 0; i < stringToCut.length; i++) {
-    let isSeparator = false;
-    for (const separator of stringSeparators) {
-      if (stringToCut[i] === separator) {
-        isSeparator = true;
-        if (string) {
-          strSplit.push(string);
-          string = "";
-        }
+  for (const char of stringToSplit) {
+    if (separators.includes(char)) {
+      if (string) {
+        stringSplited.push(string);
+        string = "";
       }
-    }
-    if (isSeparator === false) {
-      string += stringToCut[i];
-    }
+    } else string += char;
   }
-  strSplit.push(string);
-  return strSplit;
+  if (string) stringSplited.push(string);
+  return stringSplited;
 }
 
 function isValidArguments(arguments) {
@@ -39,11 +32,18 @@ function getArguments() {
   return arguments;
 }
 
+function getSeparators() {
+  return [" ", "\n", "\t"];
+}
+
 function getStringSplit() {
   const strings = isValidArguments(getArguments());
   if (!strings) return;
-  const separators = [" ", "\n", "\t"];
-  return split(strings[0], separators);
+
+  const string = strings[0];
+  const separators = getSeparators();
+
+  return split(string, separators);
 }
 
 console.log(getStringSplit());
