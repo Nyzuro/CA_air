@@ -1,9 +1,9 @@
-function operationForList(list, operation) {
-  let afterOperation = [];
-  for (const number of list) {
-    afterOperation.push(number + operation);
+function operationForList(numbers, operation) {
+  const numbersAfterOperand = [];
+  for (const number of numbers) {
+    numbersAfterOperand.push(number + operation);
   }
-  return afterOperation;
+  return numbersAfterOperand;
 }
 
 function isValidArguments(arguments) {
@@ -14,15 +14,14 @@ function isValidArguments(arguments) {
   return arguments;
 }
 
-function isValidNumbers(arguments) {
-  for (let i = 0; i < arguments.length; i++) {
-    if (isNaN(arguments[i])) {
-      console.error("Entrez des chiffres");
-      return;
-    }
-    arguments[i] = Number(arguments[i]);
+function isValidNumber(number) {
+  if (isNaN(number)) {
+    console.error("Entrez des chiffres");
+    return;
   }
-  return arguments;
+
+  number = Number(number);
+  return number;
 }
 
 function getArguments() {
@@ -33,8 +32,13 @@ function getArguments() {
 function getListAfterOperation() {
   const arguments = isValidArguments(getArguments());
   if (!arguments) return;
-  const numbers = isValidNumbers(arguments);
+
+  const numbers = [];
+  for (const number of arguments) {
+    numbers.push(isValidNumber(number));
+  }
   if (!numbers) return;
+
   const operation = numbers.pop();
   return operationForList(numbers, operation);
 }
