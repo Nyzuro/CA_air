@@ -22,9 +22,11 @@ function getArguments() {
 }
 
 function getStringWithoutDuplicates() {
-  const string = isValidArguments(getArguments());
-  if (!string) return;
-  return removeDuplicates(string[0]);
+  const arguments = isValidArguments(getArguments());
+  if (!arguments) return;
+  const string = arguments[0];
+
+  return removeDuplicates(string);
 }
 
 console.log(getStringWithoutDuplicates());
