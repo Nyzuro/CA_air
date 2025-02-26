@@ -1,14 +1,15 @@
 function findIntruders(list) {
   const intruders = [];
-  for (let i = 0; i < list.length; i++) {
+
+  for (const index of list) {
     let countPair = 0;
-    for (let j = 0; j < list.length; j++) {
-      if (list[i] === list[j]) {
+    for (const char of list) {
+      if (index === char) {
         countPair++;
       }
     }
     if (countPair === 1) {
-      intruders.push(list[i]);
+      intruders.push(index);
     }
   }
   return intruders.join(" ");
