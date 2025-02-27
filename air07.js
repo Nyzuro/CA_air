@@ -1,14 +1,14 @@
-function sortedInsert(firstArray, newElement) {
-  const sortedArray = [];
-  for (let i = 0; i < firstArray.length; i++) {
-    if (firstArray[i] <= newElement) {
-      sortedArray.push(firstArray[i]);
-    } else {
-      sortedArray.push(newElement);
-      for (let j = i; j < firstArray.length; j++) {
-        sortedArray.push(firstArray[j]);
-      }
-      return sortedArray.join(" ");
+function sortedInsert(numbers, newElement) {
+  for (let i = 0; i < numbers.length; i++) {
+    if (newElement >= numbers[i] && newElement <= numbers[i + 1]) {
+      numbers.splice(i + 1, 0, newElement);
+      return numbers;
+    } else if (newElement <= numbers[i]) {
+      numbers.splice(i, 0, newElement);
+      return numbers;
+    } else if (newElement >= numbers[i] && numbers[i + 1] === undefined) {
+      numbers.splice(i + 1, 0, newElement);
+      return numbers;
     }
   }
 }
@@ -21,15 +21,23 @@ function isValidArguments(arguments) {
   return arguments;
 }
 
-function isValidNumbers(arguments) {
-  for (let i = 0; i < arguments.length; i++) {
-    if (isNaN(arguments[i])) {
-      console.error("Entrez des chiffres");
+function isValidNumber(number) {
+  if (isNaN(number)) {
+    console.error("Entrez des chiffres");
+    return;
+  }
+  number = Number(number);
+  return number;
+}
+
+function isSortedNumbers(numbers) {
+  for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] > numbers[i + 1]) {
+      console.error("Le tableau n'est pas trie");
       return;
     }
-    arguments[i] = Number(arguments[i]);
   }
-  return arguments;
+  return numbers;
 }
 
 function getArguments() {
@@ -40,10 +48,16 @@ function getArguments() {
 function getSortedArray() {
   const arguments = isValidArguments(getArguments());
   if (!arguments) return;
-  const numbers = isValidNumbers(arguments);
+
+  const numbers = [];
+  for (const number of arguments) {
+    numbers.push(isValidNumber(number));
+  }
   if (!numbers) return;
+
   const newElement = numbers.pop();
-  return sortedInsert(numbers, newElement);
+  const sortedNumbers = isSortedNumbers(numbers);
+  return sortedInsert(sortedNumbers, newElement);
 }
 
 console.log(getSortedArray());
