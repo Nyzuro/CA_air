@@ -1,15 +1,14 @@
 function getBothArrays(arguments) {
-  const firstArray = [];
-  const secondArray = [];
-  for (let i = 0; i < arguments.length; i++) {
-    if (arguments[i] !== "fusion") firstArray.push(arguments[i]);
-    else {
-      for (let j = i + 1; j < arguments.length; j++) {
-        secondArray.push(arguments[j]);
-      }
-      return [firstArray, secondArray];
-    }
+  let indexFusion;
+  for (let i = 0; arguments[i] !== "fusion"; i++) {
+    indexFusion = i;
   }
+  indexFusion++;
+
+  let firstArray = arguments.slice(0, indexFusion);
+  let secondArray = arguments.slice(indexFusion + 1);
+
+  return [firstArray, secondArray];
 }
 
 function sortedFusion(firstArray, secondArray) {
@@ -55,17 +54,23 @@ function containsFusion(arguments) {
   return arguments;
 }
 
-function isValidNumbers(arguments) {
-  for (let i = 0; i < arguments.length; i++) {
-    if (arguments[i] !== "fusion") {
-      if (isNaN(arguments[i])) {
-        console.error("Entrez des chiffres");
-        return;
-      }
-      arguments[i] = Number(arguments[i]);
+function isValidNumber(number) {
+  if (isNaN(number)) {
+    console.error("Entrez des chiffres");
+    return;
+  }
+  number = Number(number);
+  return number;
+}
+
+function isSortedNumbers(numbers) {
+  for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] > numbers[i + 1]) {
+      console.error("Le tableau n'est pas trie");
+      return;
     }
   }
-  return arguments;
+  return numbers;
 }
 
 function getArguments() {
@@ -74,14 +79,22 @@ function getArguments() {
 }
 
 function getSortedFusion() {
-  const arguments = isValidArguments(getArguments());
+  const arguments = containsFusion(isValidArguments(getArguments()));
   if (!arguments) return;
-  const arrayFusion = containsFusion(arguments);
-  if (!arrayFusion) return;
-  const numbers = isValidNumbers(arguments);
+
+  const numbers = [];
+  for (const number of arguments) {
+    if (number !== "fusion") numbers.push(isValidNumber(number));
+  }
   if (!numbers) return;
+
   const arrays = getBothArrays(arguments);
-  return sortedFusion(arrays[0], arrays[1]);
+  const firstArray = isSortedNumbers(arrays[0]);
+  if (!firstArray) return;
+  const secondArray = isSortedNumbers(arrays[1]);
+  if (!secondArray) return;
+
+  return sortedFusion(firstArray, secondArray);
 }
 
 console.log(getSortedFusion());
