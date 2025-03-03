@@ -1,32 +1,32 @@
-const swap = (array, i, j) => {
-  const temp = array[i];
-  array[i] = array[j];
-  array[j] = temp;
+const swap = (numbers, i, j) => {
+  const temp = numbers[i];
+  numbers[i] = numbers[j];
+  numbers[j] = temp;
 };
 
-const partition = (array, low, high) => {
-  const pivot = array[high];
+const partition = (numbers, low, high) => {
+  const pivot = numbers[high];
   let i = low - 1;
 
   for (let j = low; j < high; j++) {
-    if (array[j] < pivot) {
+    if (numbers[j] < pivot) {
       i++;
-      swap(array, i, j);
+      swap(numbers, i, j);
     }
   }
 
-  swap(array, i + 1, high);
+  swap(numbers, i + 1, high);
   return i + 1;
 };
 
-const quickSort = (array, low, high) => {
+const quickSort = (numbers, low, high) => {
   if (low < high) {
-    pivot = partition(array, low, high);
+    pivot = partition(numbers, low, high);
 
-    quickSort(array, low, pivot - 1);
-    quickSort(array, pivot + 1, high);
+    quickSort(numbers, low, pivot - 1);
+    quickSort(numbers, pivot + 1, high);
   }
-  return array.join(" ");
+  return numbers.join(" ");
 };
 
 const isValidArguments = (arguments) => {

@@ -26,8 +26,7 @@ const isValidNumber = (number) => {
     console.error("Entrez un nombre en tant que ligne en 2eme argument");
     return;
   }
-  number = Number(number);
-  return number;
+  return Number(number);
 };
 
 const isValidChar = (char) => {
@@ -46,11 +45,11 @@ const getArguments = () => {
 const getPyramid = () => {
   const arguments = isValidArguments(getArguments());
   if (!arguments) return;
-  const line = isValidNumber(arguments[1]);
-  if (!line) return;
+  const numbersOfLines = isValidNumber(arguments[1]);
+  if (!numbersOfLines) return;
   const char = isValidChar(arguments[0]);
   if (!char) return;
-  return pyramid(char, line);
+  return pyramid(char, numbersOfLines);
 };
 
 getPyramid();
